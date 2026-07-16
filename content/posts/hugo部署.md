@@ -3,8 +3,8 @@ date = '2026-07-16T17:11:30+08:00'
 draft = false
 title = 'Hugo部署'
 +++
-hugo部署流程
-一、前置说明
+
+#一、前置说明
 1.1 整体架构
 本方案采用「本地写作 + GitHub 云端自动构建部署」的模式，整体流程如下：
 
@@ -23,7 +23,7 @@ baseURL 末尾必须带 /，否则 CSS 和 JS 会 404，页面样式全乱。
 写作和本地预览全程离线，只有 git push 和首次拉主题时需要联网。
 
 
-二、安装 Git
+#二、安装 Git
 2.1 下载与安装
 1.打开浏览器，访问 https://git-scm.com/download/win
 2.下载 64-bit Git for Windows Setup（约 50MB）
@@ -42,7 +42,7 @@ git config --global user.email "你的邮箱@example.com"
 用户名和邮箱不一定要和 GitHub 一致，但建议保持一致方便管理。
 
 
-三、安装 Hugo（Extended 版）
+#三、安装 Hugo（Extended 版）
 3.1 为什么必须用 Extended 版
 Hugo 有两个版本：Standard 和 Extended。大多数主流主题（PaperMod、Stack、Even 等）都使用 SCSS 样式预处理，只有 Extended 版才包含 SCSS 编译器。装了 Standard 版在构建时会报类似「SCSS not supported」的错误。
 
@@ -68,7 +68,7 @@ hugo v0.147.8+extended windows/amd64 BuildDate=...
 看到 +extended 字样就说明装对了。如果没有，检查 Path 配置或重新打开终端。
 
 
-四、创建 Hugo 站点
+#四、创建 Hugo 站点
 4.1 新建站点
 选一个你喜欢的目录放博客项目，比如 D:\MyBlogs。在 CMD 中执行：
 cd D:\MyBlogs
@@ -112,7 +112,7 @@ theme = "PaperMod"
 baseURL 必须替换成你自己的 GitHub 用户名对应的 Pages 地址，末尾的 / 不能省略。
 
 
-五、写第一篇文章
+#五、写第一篇文章
 5.1 创建文章
 在 myblog 目录下执行：
 hugo new posts/hello-world.md
@@ -142,7 +142,7 @@ Press Ctrl+C to stop
 打开浏览器访问 http://localhost:1313 即可看到你的博客。修改文章后页面会自动刷新。按 Ctrl+C 停止服务器。
 
 
-六、创建 GitHub 仓库
+#六、创建 GitHub 仓库
 6.1 注册 GitHub 账号
 •访问 https://github.com 注册账号（记住用户名，后面要用）
 •验证邮箱
@@ -174,7 +174,7 @@ git push -u origin main
 推荐配置 SSH 密钥对，以后 push 再也不用输密码。详见第九章。
 
 
-七、配置 GitHub Actions 自动部署
+#七、配置 GitHub Actions 自动部署
 7.1 开启 GitHub Pages
 28.进入仓库页面 → Settings → Pages
 29.Source 选择 GitHub Actions（不要选 Deploy from a branch）
@@ -250,7 +250,7 @@ git push
 如果 Actions 变红报错，点击进去看日志。最常见错误：submodule 拉不到主题（网络问题）、baseURL 写错。
 
 
-八、日常写作与更新流程
+#八、日常写作与更新流程
 8.1 写新文章
 cd D:\MyBlogs\myblog
 hugo new posts/文章标题.md
@@ -275,7 +275,7 @@ git push
 git submodule update --remote themes/PaperMod
 
 
-九、配置 SSH 密钥（免密推送）
+#九、配置 SSH 密钥（免密推送）
 9.1 生成密钥对
 打开 PowerShell 或 Git Bash，输入：
 ssh-keygen -t ed25519 -C "你的邮箱@example.com"
@@ -310,50 +310,3 @@ git remote set-url origin git@github.com:你的用户名/你的用户名.github.
 git remote -v
 配置 SSH 后，git push 再也不需要输入用户名和密码，直接推送。
 
-
-十、常见问题排查
-问题现象	可能原因	解决方法
-页面样式全乱/CSS 404	baseURL 末尾没加 /	hugo.toml 中 baseURL 末尾加上 /
-hugo server 白页	theme 名称写错或主题未下载	检查 themes/ 目录和 hugo.toml 的 theme 字段
-文章不显示	draft 还是 true	改为 draft: false 后重新构建
-Actions 报错红	submodule 拉取失败	检查主题用 submodule 还是 zip，或手动 commit 主题文件
-push 被拒/认证失败	GitHub 不支持密码登录	用 PAT Token 或配置 SSH 密钥
-线上没更新	push 到非 main 分支 / 缓存	确认推到 main 分支，Ctrl+F5 强刷
-hugo version 报命令不存在	Path 环境变量未配置或终端未重启	检查 Path，重启 CMD/PowerShell
-
-
-十一、进阶配置建议
-11.1 自定义域名
-•购买域名后，在仓库 Settings → Pages → Custom domain 填入
-•在域名服务商处添加 CNAME 记录指向 你的用户名.github.io
-•GitHub 会自动签发 HTTPS 证书（Let's Encrypt）
-
-11.2 评论系统
-GitHub Pages 是纯静态，无法自己存评论，可选方案：
-•Giscus（基于 GitHub Discussions，免费，推荐）
-•Utterances（基于 GitHub Issues，免费）
-•Disqus（老牌第三方，有广告）
-
-11.3 网站访问统计
-•Google Analytics 4（GA4）—— 功能强大，需翻墙看数据
-•Umami —— 开源、隐私友好、可自托管
-•百度统计 —— 国内访问快，中文界面
-
-11.4 多作者协作
-•A 和 B 都 clone 同一个仓库，文章分目录存放（content/a/ 和 content/b/）
-•每篇文章 front matter 加 author 字段区分作者
-•push 前先 git pull 拉最新，避免覆盖对方内容
-
-
-附录：常用命令速查表
-命令	说明
-hugo new site 项目名	创建新的 Hugo 站点
-hugo new posts/文章名.md	新建一篇文章
-hugo server -D	本地启动开发服务器（含草稿）
-hugo --minify	构建生产版本到 public/（CI 自动做）
-git add .	暂存所有改动
-git commit -m "说明"	提交到本地仓库
-git push	推送到 GitHub 触发自动部署
-git pull	拉取远程最新代码（协作时必做）
-git submodule update --remote	更新主题到最新版
-ssh -T git@github.com	测试 SSH 连接是否通
