@@ -1,0 +1,4 @@
+baseURL = 'https://yonuni.github.io/'
+locale = 'zh-cn'
+title = '我的博客'
+theme = 'PaperMod'
